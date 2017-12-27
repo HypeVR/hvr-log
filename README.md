@@ -387,90 +387,13 @@ Doxygen
     brew install graphviz
 ~~~~~~~~~~~~~~~~~~~~~
 
-CUDA
+glog
 --------------
 
-**For Linux**
-
-- Download the latest cuda run file on NVIDIA's website
-
 ~~~~~~~~~~~~~~~~~~~~~
-    sudo apt-get remove --purge cuda*
-
-    chmod a+x cuda_x.x.xx_linux.run
-
-    sudo ./cuda_x.x.xx_linux.run
+    sudo apt-get install glog
 ~~~~~~~~~~~~~~~~~~~~~
 
-- Just install cuda and the samples, don't install the driver
-
-- Add system path
-
-~~~~~~~~~~~~~~~~~~~~~
-    vim ~/.bashrc
-~~~~~~~~~~~~~~~~~~~~~
-
-- export PATH=/usr/local/cuda/bin:$PATH
-
-- export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
-
-- Test samples
-
-~~~~~~~~~~~~~~~~~~~~~
-    cd NVIDIA_CUDA-x.x_Samples/bin/x86_64/linux/release
-
-    ./deviceQuery
-
-    ./bandwidthTest
-
-    ./smokeParticles
-~~~~~~~~~~~~~~~~~~~~~
-
-**For Windows**
-
-- Download the latest cuda
-
-- Follow instructions on express installation
-
-- Tell vcpkg cuda is installed
-
-~~~~~~~~~~~~~~~~~~~~~
-    vcpkg install cuda
-~~~~~~~~~~~~~~~~~~~~~
-
-**For Mac/OSX**
-
-- Download the latest cuda
-
-- Follow instructions (similar to linux install)
-
-OpenCV
---------------
-
-**For Linux**
-
-~~~~~~~~~~~~~~~~~~~~~
-    sudo apt-get install opencv-main opencv-dev opencv-libs
-~~~~~~~~~~~~~~~~~~~~~
-
-**For Windows**
-
-~~~~~~~~~~~~~~~~~~~~~
-    vcpkg install opencv
-~~~~~~~~~~~~~~~~~~~~~
-
-**For Mac/OSX**
-
-- install brew from http://brew.sh
-
-~~~~~~~~~~~~~~~~~~~~~
-    brew install opencv3.2
-~~~~~~~~~~~~~~~~~~~~~
-
-- Follow brew after-installation instruction
-
-- link opencv include, library, share directory from /usr/local/opt/opencv3 to
-  /usr/local/include, /usr/local/lib, and /usr/local/share
 
 Debugging
 ==============
