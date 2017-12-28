@@ -1,4 +1,5 @@
-cmake_minimum_required(VERSION 3.7)
+cmake_minimum_required(VERSION 3.9)
+
 project(hvr_log)
 
 if(MSVC)
@@ -22,6 +23,8 @@ source_group("src"     FILES ${PROJECT_SRCS})
 find_package( glog REQUIRED )
 
 add_library(${PROJECT_NAME} SHARED ${PROJECT_SRCS} ${PROJECT_INCS})
+
+target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_14)
 
 target_compile_definitions(${PROJECT_NAME} PUBLIC
                           HVR_WINDOWS_DISABLE_ALL_WARNING=${DISABLE}
@@ -54,6 +57,5 @@ install(FILES ${PROJECT_SOURCE_DIR}/include/Hvr/Log/Log.h
 export(TARGETS ${PROJECT_NAME}
       APPEND FILE ${CMAKE_BINARY_DIR}/${CMAKE_PROJECT_NAME}Targets.cmake)
 
-file(APPEND
-    ${CMAKE_BINARY_DIR}/${CMAKE_PROJECT_NAME}Config.cmake
-    "set(HVR_LOG_LIBRARIES \${HVR_LOG_LIBRARIES} ${PROJECT_NAME})\n")
+file(APPEND ${CMAKE_BINARY_DIR}/${CMAKE_PROJECT_NAME}Config.cmake
+    "find_dependency(glog REQUIRED)\n")

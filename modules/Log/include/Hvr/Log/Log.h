@@ -78,6 +78,7 @@ class Log
    */
   void Global_Shutdown() const;
 };
+
 }  // namespace hvr
 
 #endif  // MODULES_LOG_INCLUDE_HVR_LOG_LOG_H_

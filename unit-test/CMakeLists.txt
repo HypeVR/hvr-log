@@ -1,39 +1,41 @@
-cmake_minimum_required(VERSION 3.7)
+cmake_minimum_required(VERSION 3.9)
+
 project(unit-test)
 
-# for visual studio
-set(gtest_force_shared_crt ON CACHE BOOL "Always use msvcrt.dll")
-string(REPLACE "/w44668" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
-string(REPLACE "/w44365" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
-string(REPLACE "/w44571" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
-string(REPLACE "/w44640" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+if((NOT TARGET test) AND (NOT TARGET RUN_UNIT_TEST))
+  # for visual studio
+  set(gtest_force_shared_crt ON CACHE BOOL "Always use msvcrt.dll")
+  string(REPLACE "/w44668" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+  string(REPLACE "/w44365" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+  string(REPLACE "/w44571" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+  string(REPLACE "/w44640" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 
-# Download and unpack gtest at configure time
-configure_file(gtest.txt gtest-download/CMakeLists.txt)
-execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
-  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/gtest-download)
-execute_process(COMMAND ${CMAKE_COMMAND} --build .
-  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/gtest-download)
+  set(CMAKE_CXX_STANDARD 14)
 
-# Add gtest directly to our build
-add_subdirectory(${CMAKE_BINARY_DIR}/gtest-src
-                ${CMAKE_BINARY_DIR}/gtest-build
-                EXCLUDE_FROM_ALL)
+  # Download and unpack gtest at configure time
+  configure_file(gtest.txt gtest-download/CMakeLists.txt)
+  execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/gtest-download)
+  execute_process(COMMAND ${CMAKE_COMMAND} --build .
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/gtest-download)
 
-# Add the gtest include directory, since gtest
-# doesn't add that dependency to its gtest target
-target_include_directories(gtest INTERFACE
-                          "${CMAKE_BINARY_DIR}/gtest-src/googletest/include")
+  # Add gtest directly to our build
+  add_subdirectory(${CMAKE_BINARY_DIR}/gtest-src
+                  ${CMAKE_BINARY_DIR}/gtest-build
+                  EXCLUDE_FROM_ALL)
 
-cmake_policy(SET CMP0037 OLD)
-if(NOT TARGET test)
+  # Add the gtest include directory, since gtest
+  # doesn't add that dependency to its gtest target
+  target_include_directories(gtest INTERFACE
+                            "${CMAKE_BINARY_DIR}/gtest-src/googletest/include")
+
   if(MSVC)
-  add_custom_target(RUN_UNIT_TEST
+    add_custom_target(RUN_UNIT_TEST
         COMMAND ${CMAKE_BINARY_DIR}//bin//$<CONFIGURATION>//LogTest.exe)
-  elseif((CMAKE_CXX_COMPILER_ID MATCHES "Clang") OR CMAKE_COMPILER_IS_GNUCC
+  elseif((CMAKE_CXX_COMPILER_ID STREQUAL "Clang") OR CMAKE_COMPILER_IS_GNUCC
     OR CMAKE_COMPILER_IS_GNUCXX)
-  add_custom_target(test
-          COMMAND ${CMAKE_CURRENT_BINARY_DIR}/Log/LogTest)
+    add_custom_target(test
+        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/Log/LogTest)
   endif()
 endif()
 

@@ -7,15 +7,12 @@
 #include <iostream>
 #include <string>
 #include <thread>
-#include "Hvr/Log/Log.h"
 
 HVR_WINDOWS_DISABLE_ALL_WARNING
 #include "boost/filesystem.hpp"
-#include "boost/regex.hpp"
-#include "boost/regex_fwd.hpp"
-#include "boost/token_iterator.hpp"
-#include "boost/xpressive/regex_token_iterator.hpp"
 HVR_WINDOWS_ENABLE_ALL_WARNING
+
+#include "Hvr/Log/Log.h"
 
 extern std::string exe_path;
 
@@ -44,11 +41,13 @@ void LogTest::TearDown()
   directory                  = exe_path;
   boost::filesystem::recursive_directory_iterator rdi_err(directory);
   boost::filesystem::recursive_directory_iterator end_rdi_err;
+
   for (; rdi_err != end_rdi_err; rdi_err++)
   {
     if (extension.compare((*rdi_err).path().extension().string()) == 0)
     {
       std::size_t found = (*rdi_err).path().string().find(prefix_error);
+
       if (found != std::string::npos)
       {
         if (boost::filesystem::exists((*rdi_err).path().string()))
@@ -60,6 +59,7 @@ void LogTest::TearDown()
 
   boost::filesystem::recursive_directory_iterator rdi_info(directory);
   boost::filesystem::recursive_directory_iterator end_rdi_info;
+
   for (; rdi_info != end_rdi_info; rdi_info++)
   {
     if (extension.compare((*rdi_info).path().extension().string()) == 0)
@@ -76,6 +76,7 @@ void LogTest::TearDown()
 
   boost::filesystem::recursive_directory_iterator rdi_war(directory);
   boost::filesystem::recursive_directory_iterator end_rdi_war;
+
   for (; rdi_war != end_rdi_war; rdi_war++)
   {
     if (extension.compare((*rdi_war).path().extension().string()) == 0)
@@ -102,7 +103,7 @@ TEST_F(LogTest, Log_Error)
   std::string directory;
   std::string extension = ".log";
   std::string prefix    = "Log_ERROR";
-  directory             = ".";
+  directory             = exe_path;
 
   boost::filesystem::recursive_directory_iterator rdi(directory);
   boost::filesystem::recursive_directory_iterator end_rdi;
@@ -112,10 +113,12 @@ TEST_F(LogTest, Log_Error)
     if (extension.compare((*rdi).path().extension().string()) == 0)
     {
       std::size_t found = (*rdi).path().string().find(prefix);
+
       if (found != std::string::npos)
       {
         std::ifstream fin;
         fin.open((*rdi).path().string());
+
         if (fin.fail())
         {
           std::cout << "Input file opening failed.\n";
@@ -130,7 +133,7 @@ TEST_F(LogTest, Log_Error)
             std::string temp = "";
             getline(fin, temp);
 
-            for (size_t i = 0; i < key.size(); i++)
+            for (std::size_t i = 0; i < key.size(); i++)
             {
               if (temp[i] == key[i]) is_found = true;
               break;
@@ -155,8 +158,7 @@ TEST_F(LogTest, Log_Info)
   std::string directory;
   std::string extension = ".log";
   std::string prefix    = "Log_INFO";
-
-  directory = exe_path;
+  directory             = exe_path;
 
   boost::filesystem::recursive_directory_iterator rdi(directory);
   boost::filesystem::recursive_directory_iterator end_rdi;
@@ -166,10 +168,12 @@ TEST_F(LogTest, Log_Info)
     if (extension.compare((*rdi).path().extension().string()) == 0)
     {
       std::size_t found = (*rdi).path().string().find(prefix);
+
       if (found != std::string::npos)
       {
         std::ifstream fin;
         fin.open((*rdi).path().string());
+
         if (fin.fail())
         {
           std::cout << "Input file opening failed.\n";
@@ -184,7 +188,7 @@ TEST_F(LogTest, Log_Info)
             std::string temp = "";
             getline(fin, temp);
 
-            for (size_t i = 0; i < key.size(); i++)
+            for (std::size_t i = 0; i < key.size(); i++)
             {
               if (temp[i] == key[i]) is_found = true;
               break;
@@ -209,8 +213,7 @@ TEST_F(LogTest, Log_Warning)
   std::string directory;
   std::string extension = ".log";
   std::string prefix    = "Log_WARNING";
-
-  directory = exe_path;
+  directory             = exe_path;
 
   boost::filesystem::recursive_directory_iterator rdi(directory);
   boost::filesystem::recursive_directory_iterator end_rdi;
@@ -220,10 +223,12 @@ TEST_F(LogTest, Log_Warning)
     if (extension.compare((*rdi).path().extension().string()) == 0)
     {
       std::size_t found = (*rdi).path().string().find(prefix);
+
       if (found != std::string::npos)
       {
         std::ifstream fin;
         fin.open((*rdi).path().string());
+
         if (fin.fail())
         {
           std::cout << "Input file opening failed.\n";
@@ -238,7 +243,7 @@ TEST_F(LogTest, Log_Warning)
             std::string temp = "";
             getline(fin, temp);
 
-            for (size_t i = 0; i < key.size(); i++)
+            for (std::size_t i = 0; i < key.size(); i++)
             {
               if (temp[i] == key[i]) is_found = true;
               break;

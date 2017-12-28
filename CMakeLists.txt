@@ -1,9 +1,9 @@
-cmake_minimum_required(VERSION 3.7)
+cmake_minimum_required(VERSION 3.9)
+
+project(hvr-log LANGUAGES CXX)
 
 set(CMAKE_DISABLE_SOURCE_CHANGES ON)
 set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
-
-project(hvr-sample)
 
 if(MSVC)
   set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
@@ -12,18 +12,10 @@ if(MSVC)
   set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 endif()
 
+
 if(MSVC)
-  if(CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
-    string(REGEX REPLACE "/W[0-4]" "/W4" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
-  else()
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
-  endif()
-  # Enable multi-thread compilation
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")
-  # Disable warnings on Windows
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4 /MP /WX /sdl")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4127") # condition is constant
-  # Enable additional warnings on Windows
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /WX /sdl")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /w44062")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /w44191")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /w44242")
@@ -59,10 +51,7 @@ if(MSVC)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /w44548")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /w44555")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /w44557")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /w44571")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /w44574")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /w44619")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /w44623")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /w44628")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /w44640")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /w44668")
@@ -85,22 +74,20 @@ if(MSVC)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /w44988")
 elseif(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -W -Wall -Werror -fsigned-char")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -freg-struct-return -Wextra")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -freg-struct-return -Wextra -Wabi")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wpointer-arith -Wcast-qual -Wshadow")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wpedantic -std=c++1y")
-elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-  set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wpedantic -Wcast-align")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wformat-security -Wtrampolines")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native -msse4.2 -mfpmath=sse")
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -W -Wall -Werror -fsigned-char")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Wpedantic")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wpointer-arith -Wcast-qual -Wshadow")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wpedantic -std=c++1y")
 endif()
 
-option(DEBUG "Enable debugging information" OFF)
-
-if((CMAKE_CXX_COMPILER_ID MATCHES "Clang") OR CMAKE_COMPILER_IS_GNUCC
+if((CMAKE_CXX_COMPILER_ID STREQUAL "Clang") OR CMAKE_COMPILER_IS_GNUCC
     OR CMAKE_COMPILER_IS_GNUCXX)
-  if(DEBUG)
+  if(CMAKE_BUILD_TYPE STREQUAL "DEBUG")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Winline")
   else()
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -DNDEBUG")
@@ -120,11 +107,12 @@ if(NOT TARGET uninstall)
       ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
 endif()
 
-export(TARGETS
-      FILE ${CMAKE_BINARY_DIR}/${CMAKE_PROJECT_NAME}Targets.cmake)
+if(${CMAKE_CURRENT_SOURCE_DIR} STREQUAL ${CMAKE_SOURCE_DIR})
+  export(TARGETS FILE ${CMAKE_BINARY_DIR}/${CMAKE_PROJECT_NAME}Targets.cmake)
+endif()
 
-file(WRITE
-    ${CMAKE_BINARY_DIR}/${CMAKE_PROJECT_NAME}Config.cmake
+file(WRITE ${CMAKE_BINARY_DIR}/${CMAKE_PROJECT_NAME}Config.cmake
+    "include(CMakeFindDependencyMacro)\n"
     "include(\${CMAKE_CURRENT_LIST_DIR}/${CMAKE_PROJECT_NAME}Targets.cmake)\n")
 
 add_subdirectory(modules)
@@ -133,13 +121,18 @@ add_subdirectory(doc)
 
 option(UNIT_TEST "Run unit tests" ON)
 
-if(UNIT_TEST)
+if(UNIT_TEST AND (${CMAKE_CURRENT_SOURCE_DIR} STREQUAL ${CMAKE_SOURCE_DIR}))
   add_subdirectory(unit-test)
 endif()
 
-install(FILES
-        ${CMAKE_BINARY_DIR}/${CMAKE_PROJECT_NAME}Config.cmake
+install(FILES ${CMAKE_BINARY_DIR}/${CMAKE_PROJECT_NAME}Config.cmake
         DESTINATION lib/cmake/${CMAKE_PROJECT_NAME})
 
-install(EXPORT ${CMAKE_PROJECT_NAME}Targets
+install(EXPORT ${CMAKE_PROJECT_NAME}Targets NAMESPACE hvr::
         DESTINATION lib/cmake/${CMAKE_PROJECT_NAME})
+
+if(NOT TARGET install-app)
+  add_custom_target(install-app COMMAND
+                    "${CMAKE_COMMAND}" -DCMAKE_INSTALL_COMPONENT=install-app
+                    -P "${CMAKE_BINARY_DIR}/cmake_install.cmake")
+endif()

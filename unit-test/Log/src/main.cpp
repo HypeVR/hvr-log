@@ -1,17 +1,6 @@
 // Copyright 2017 Ahmad Hasan
 
-#include <fstream>
-#include <iostream>
 #include <string>
-#include "Hvr/Log/Log.h"
-
-HVR_WINDOWS_DISABLE_ALL_WARNING
-#include "boost/filesystem.hpp"
-#include "boost/regex.hpp"
-#include "boost/regex_fwd.hpp"
-#include "boost/token_iterator.hpp"
-#include "boost/xpressive/regex_token_iterator.hpp"
-HVR_WINDOWS_ENABLE_ALL_WARNING
 
 HVR_WINDOWS_DISABLE_ALL_WARNING
 #include "gtest/gtest.h"
