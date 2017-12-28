@@ -2,9 +2,11 @@
 
 #include "LogTest.h"
 
+#include <chrono>
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <thread>
 #include "Hvr/Log/Log.h"
 
 HVR_WINDOWS_DISABLE_ALL_WARNING
@@ -31,12 +33,67 @@ void LogTest::SetUp()
 
 void LogTest::TearDown()
 {
+  hvr::Log::Reset();
+  std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+
+  std::string directory;
+  std::string extension      = ".log";
+  std::string prefix_error   = "Log_ERROR";
+  std::string prefix_info    = "Log_INFO";
+  std::string prefix_warning = "Log_WARNING";
+  directory                  = exe_path;
+  boost::filesystem::recursive_directory_iterator rdi_err(directory);
+  boost::filesystem::recursive_directory_iterator end_rdi_err;
+  for (; rdi_err != end_rdi_err; rdi_err++)
+  {
+    if (extension.compare((*rdi_err).path().extension().string()) == 0)
+    {
+      std::size_t found = (*rdi_err).path().string().find(prefix_error);
+      if (found != std::string::npos)
+      {
+        if (boost::filesystem::exists((*rdi_err).path().string()))
+          std::remove((*rdi_err).path().string().c_str());
+        break;
+      }
+    }
+  }
+
+  boost::filesystem::recursive_directory_iterator rdi_info(directory);
+  boost::filesystem::recursive_directory_iterator end_rdi_info;
+  for (; rdi_info != end_rdi_info; rdi_info++)
+  {
+    if (extension.compare((*rdi_info).path().extension().string()) == 0)
+    {
+      std::size_t found = (*rdi_info).path().string().find(prefix_info);
+      if (found != std::string::npos)
+      {
+        if (boost::filesystem::exists((*rdi_info).path().string()))
+          std::remove((*rdi_info).path().string().c_str());
+        break;
+      }
+    }
+  }
+
+  boost::filesystem::recursive_directory_iterator rdi_war(directory);
+  boost::filesystem::recursive_directory_iterator end_rdi_war;
+  for (; rdi_war != end_rdi_war; rdi_war++)
+  {
+    if (extension.compare((*rdi_war).path().extension().string()) == 0)
+    {
+      std::size_t found = (*rdi_war).path().string().find(prefix_warning);
+      if (found != std::string::npos)
+      {
+        if (boost::filesystem::exists((*rdi_war).path().string()))
+          std::remove((*rdi_war).path().string().c_str());
+        break;
+      }
+    }
+  }
 }
 
 TEST_F(LogTest, Log_Error)
 {
-  hvr::Log::Create("LogTest", "LogTest");
-
+  hvr::Log::Create(exe_path + "/Log", "LogTest");
   hvr::Log::Log_Error("Test_error");
 
   bool is_found = false;
@@ -44,9 +101,8 @@ TEST_F(LogTest, Log_Error)
   boost::filesystem::path p;
   std::string directory;
   std::string extension = ".log";
-  std::string prefix    = "LOG__error";
-
-  directory = "/home/hypevr/hvr-log/build/unit-test/";
+  std::string prefix    = "Log_ERROR";
+  directory             = ".";
 
   boost::filesystem::recursive_directory_iterator rdi(directory);
   boost::filesystem::recursive_directory_iterator end_rdi;
@@ -90,8 +146,7 @@ TEST_F(LogTest, Log_Error)
 
 TEST_F(LogTest, Log_Info)
 {
-  hvr::Log::Create("LogTest", "LogTest");
-
+  hvr::Log::Create(exe_path + "/Log", "LogTest");
   hvr::Log::Log_Error("Test_Info");
 
   bool is_found = false;
@@ -99,9 +154,9 @@ TEST_F(LogTest, Log_Info)
   boost::filesystem::path p;
   std::string directory;
   std::string extension = ".log";
-  std::string prefix    = "LOG__info";
+  std::string prefix    = "Log_INFO";
 
-  directory = "/home/hypevr/hvr-log/build/unit-test/";
+  directory = exe_path;
 
   boost::filesystem::recursive_directory_iterator rdi(directory);
   boost::filesystem::recursive_directory_iterator end_rdi;
@@ -145,8 +200,7 @@ TEST_F(LogTest, Log_Info)
 
 TEST_F(LogTest, Log_Warning)
 {
-  hvr::Log::Create("LogTest", "LogTest");
-
+  hvr::Log::Create(exe_path + "/Log", "LogTest");
   hvr::Log::Log_Error("Test_Warning");
 
   bool is_found = false;
@@ -154,9 +208,9 @@ TEST_F(LogTest, Log_Warning)
   boost::filesystem::path p;
   std::string directory;
   std::string extension = ".log";
-  std::string prefix    = "LOG__warning";
+  std::string prefix    = "Log_WARNING";
 
-  directory = "/home/hypevr/hvr-log/build/unit-test/";
+  directory = exe_path;
 
   boost::filesystem::recursive_directory_iterator rdi(directory);
   boost::filesystem::recursive_directory_iterator end_rdi;

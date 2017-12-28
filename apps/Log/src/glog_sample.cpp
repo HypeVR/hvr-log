@@ -9,7 +9,7 @@ void readme()
 
 int main(int argc, char **argv)
 {
-  hvr::Log::Create("glog_sample", argv[0]);
+  hvr::Log::Create("/home/hypevr/hvr-log/glog_sample", argv[0]);
 
   if (argc < 4)
   {

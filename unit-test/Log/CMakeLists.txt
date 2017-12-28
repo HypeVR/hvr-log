@@ -29,3 +29,4 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${Boost_INCLUDE_DIR})
 target_link_libraries(LogTest hvr_log ${Boost_LIBRARIES} gtest_main)
 
 set_property(TARGET LogTest PROPERTY FOLDER ${CMAKE_PROJECT_NAME}/unit-test)
+

@@ -71,19 +71,12 @@ class Log
    *
    * @param[in]  app_name  The application name
    */
-  void Global_Initialize(const std::string &app_name, const char *argv0);
+  void Global_Initialize(const std::string &app_name, const char *argv0) const;
 
   /**
    * @brief      Shutdown logging system
    */
-  void Global_Shutdown();
-
-  /**
-   * @brief      Sends a fatal.
-   *
-   * @param[in]  message  The message
-   */
-  void Send_Fatal(const std::string &message);
+  void Global_Shutdown() const;
 };
 }  // namespace hvr
 

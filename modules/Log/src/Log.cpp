@@ -36,13 +36,15 @@ Log::Log(const std::string& app_name, const char* argv0)
 
 Log::~Log()
 {
+  Global_Shutdown();
 }
 
-void Log::Global_Initialize(const std::string& app_name, const char* argv0)
+void Log::Global_Initialize(const std::string& app_name,
+                            const char* argv0) const
 {
-  std::string info_log_name    = "INFO_" + app_name + "_";
-  std::string warning_log_name = "WARNING_" + app_name + "_";
-  std::string error_log_name   = "ERROR_" + app_name + "_";
+  std::string info_log_name    = app_name + "_" + "INFO_";
+  std::string warning_log_name = app_name + "_" + "WARNING_";
+  std::string error_log_name   = app_name + "_" + "ERROR_";
 
   ::FLAGS_logbuflevel = -1;
   google::SetLogDestination(google::GLOG_INFO, info_log_name.c_str());
@@ -62,7 +64,7 @@ void Log::Global_Initialize(const std::string& app_name, const char* argv0)
 #endif
 }
 
-void Log::Global_Shutdown()
+void Log::Global_Shutdown() const
 {
   google::ShutdownGoogleLogging();
 }
@@ -80,11 +82,6 @@ void Log::Log_Info(const std::string& message)
 void Log::Log_Error(const std::string& message)
 {
   if (Log::Get() != nullptr) LOG(ERROR) << message.c_str();
-}
-
-void Log::Send_Fatal(const std::string& message)
-{
-  google::SendEmail("caoyang@hypevr.com", "Fatal Error", message.c_str());
 }
 
 }  // namespace hvr
