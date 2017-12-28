@@ -59,7 +59,7 @@ void Log::Global_Initialize(const std::string& app_name,
 
   ::FLAGS_log_prefix = false;
 #ifndef NDEBUG
-  google::SetStderrLogging(google::INFO);
+  google::SetStderrLogging(google::GLOG_INFO);
   ::FLAGS_log_prefix = true;
 #endif
 }
