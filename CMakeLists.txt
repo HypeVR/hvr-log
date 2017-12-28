@@ -131,7 +131,7 @@ add_subdirectory(modules)
 add_subdirectory(apps)
 add_subdirectory(doc)
 
-option(UNIT_TEST "Run unit tests" OFF)
+option(UNIT_TEST "Run unit tests" ON)
 
 if(UNIT_TEST)
   add_subdirectory(unit-test)
