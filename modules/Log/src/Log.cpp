@@ -11,6 +11,10 @@ HVR_WINDOWS_ENABLE_ALL_WARNING
 
 namespace hvr
 {
+std::ostringstream Log::os_err = std::ostringstream();
+std::ostringstream Log::os_war = std::ostringstream();
+std::ostringstream Log::os_inf = std::ostringstream();
+
 std::shared_ptr<Log> Log::ptr_ = nullptr;
 
 void Log::Create(const std::string& app_name, const char* argv0)
@@ -69,19 +73,19 @@ void Log::Global_Shutdown() const
   google::ShutdownGoogleLogging();
 }
 
-void Log::Log_Warning(const std::string& message)
+void Log::Log_Error()
 {
-  if (Log::Get() != nullptr) LOG(WARNING) << message.c_str();
+  if (Log::Get() != nullptr) LOG(ERROR) << os_err.str();
 }
 
-void Log::Log_Info(const std::string& message)
+void Log::Log_Warning()
 {
-  if (Log::Get() != nullptr) LOG(INFO) << message.c_str();
+  if (Log::Get() != nullptr) LOG(WARNING) << os_war.str();
 }
 
-void Log::Log_Error(const std::string& message)
+void Log::Log_Info()
 {
-  if (Log::Get() != nullptr) LOG(ERROR) << message.c_str();
+  if (Log::Get() != nullptr) LOG(INFO) << os_inf.str();
 }
 
 }  // namespace hvr

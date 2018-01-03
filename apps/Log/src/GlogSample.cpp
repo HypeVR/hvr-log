@@ -4,8 +4,7 @@
 
 void readme()
 {
-  hvr::Log::Log_Error(
-      " Usage: ./exec <path/to/xml> <start_frame_number> <end_frame_number>");
+  hvr::Log::Log_Error(1, "msjhfg", 34, "sdkufgti");
 }
 
 int main(int argc, char **argv)
