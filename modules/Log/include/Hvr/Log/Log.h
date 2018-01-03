@@ -81,7 +81,7 @@ class Log
    * @param      var1   The variable 1 is a function pointer
    * @param[in]  var2   parameter pack that has << overload
    *
-   * @tparam     Types  { description }
+   * @tparam     Types  types of individual parameters in var2
    */
   template <typename... Types>
   static void Log_Error(std::ostream &(*var1)(std::ostream &), Types... var2)
@@ -107,6 +107,21 @@ class Log
   }
 
   /**
+     * @brief      Logs an warning with a template specialization.
+     *
+     * @param      var1   The variable 1 is a function pointer
+     * @param[in]  var2   parameter pack that has << overload
+     *
+     * @tparam     Types  types of individual parameters in var2
+     */
+  template <typename... Types>
+  static void Log_Warning(std::ostream &(*var1)(std::ostream &), Types... var2)
+  {
+    os_err << var1;
+    Log_Warning(var2...);
+  }
+
+  /**
    * @brief      Logs an information.
    *
    * @param[in]  var1   any type of variable that has << overload
@@ -119,6 +134,21 @@ class Log
   static void Log_Info(T var1, Types... var2)
   {
     os_inf << var1;
+    Log_Info(var2...);
+  }
+
+  /**
+     * @brief      Logs an info with a template specialization.
+     *
+     * @param      var1   The variable 1 is a function pointer
+     * @param[in]  var2   parameter pack that has << overload
+     *
+     * @tparam     Types  types of individual parameters in var2
+     */
+  template <typename... Types>
+  static void Log_Info(std::ostream &(*var1)(std::ostream &), Types... var2)
+  {
+    os_err << var1;
     Log_Info(var2...);
   }
 
