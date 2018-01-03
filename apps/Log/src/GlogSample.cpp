@@ -1,10 +1,11 @@
 // Copyright 2017 Ahmad Hasan
 
+#include <iostream>
 #include "Hvr/Log/Log.h"
 
 void readme()
 {
-  hvr::Log::Log_Error(1, "msjhfg", 34, "sdkufgti");
+  hvr::Log::Log_Error(std::endl, 1, "msjhfg", 34, "\n", "sdkufgti");
 }
 
 int main(int argc, char **argv)
