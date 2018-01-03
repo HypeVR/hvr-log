@@ -62,11 +62,11 @@ class Log
   /**
    * @brief      Logs an error.
    *
-   * @param[in]  var1   The variable 1
-   * @param[in]  var2   The variable 2 is a parameter pack
+   * @param[in]  var1   any type of variable that has << overload
+   * @param[in]  var2   parameter pack that has << overload
    *
    * @tparam     T      type of var1
-   * @tparam     Types  types of individual parameteers in var2
+   * @tparam     Types  types of individual parameters in var2
    */
   template <typename T, typename... Types>
   static void Log_Error(T var1, Types... var2)
@@ -78,8 +78,8 @@ class Log
   /**
    * @brief      Logs a warning.
    *
-   * @param[in]  var1   The variable 1
-   * @param[in]  var2   The variable 2 is a parameter pack
+   * @param[in]  var1   any type of variable that has << overload
+   * @param[in]  var2   parameter pack that has << overload
    *
    * @tparam     T      type of var1
    * @tparam     Types  types of individual parameteers in var2
@@ -94,8 +94,8 @@ class Log
   /**
    * @brief      Logs an information.
    *
-   * @param[in]  var1   The variable 1
-   * @param[in]  var2   The variable 2 is a parameter pack
+   * @param[in]  var1   any type of variable that has << overload
+   * @param[in]  var2   parameter pack that has << overload
    *
    * @tparam     T      type of var1
    * @tparam     Types  types of individual parameteers in var2
