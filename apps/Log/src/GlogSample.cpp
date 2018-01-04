@@ -1,7 +1,9 @@
 // Copyright 2017 Ahmad Hasan
 
+HVR_WINDOWS_DISABLE_ALL_WARNING
 #include <iostream>
 #include "Hvr/Log/Log.h"
+HVR_WINDOWS_ENABLE_ALL_WARNING
 
 void readme()
 {

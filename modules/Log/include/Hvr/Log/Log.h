@@ -9,9 +9,8 @@ HVR_WINDOWS_DISABLE_ALL_WARNING
 #include <sstream>
 #include <string>
 #include <vector>
-HVR_WINDOWS_ENABLE_ALL_WARNING
-
 #include "glog/logging.h"
+HVR_WINDOWS_ENABLE_ALL_WARNING
 
 namespace hvr
 {
@@ -23,41 +22,43 @@ namespace hvr
 class Log
 {
  public:
-  static std::shared_ptr<Log> ptr_;
+  HVR_LOG_DLL static std::shared_ptr<Log> ptr_;
 
   /**
    * @brief      Create a log. Recreate a log will destory the previous log.
    *
    * @param[in]  app_name  The application name
    */
-  static void Create(const std::string &app_name, const char *argv0);
+  HVR_LOG_DLL static void Create(const std::string &app_name,
+                                 const char *argv0);
 
   /**
    * @brief      Destroy log.
    */
-  static void Reset();
+  HVR_LOG_DLL static void Reset();
 
   /**
    * @brief      Get singleton log
    *
    * @return     log
    */
-  static std::shared_ptr<Log> Get();
+  HVR_LOG_DLL static std::shared_ptr<Log> Get();
 
-  Log(const std::string &app_name, const char *argv0);
-  ~Log();
+  HVR_LOG_DLL Log(const std::string &app_name, const char *argv0);
+  HVR_LOG_DLL ~Log();
 
   /**
    * @brief      Start logging system
    *
    * @param[in]  app_name  The application name
    */
-  void Global_Initialize(const std::string &app_name, const char *argv0) const;
+  HVR_LOG_DLL void Global_Initialize(const std::string &app_name,
+                                     const char *argv0) const;
 
   /**
    * @brief      Shutdown logging system
    */
-  void Global_Shutdown() const;
+  HVR_LOG_DLL void Global_Shutdown() const;
 
   /**
    * @brief      Logs an error.
@@ -69,7 +70,7 @@ class Log
    * @tparam     Types  types of individual parameters in var2
    */
   template <typename T, typename... Types>
-  static void Log_Error(T var1, Types... var2)
+  HVR_LOG_DLL static void Log_Error(T var1, Types... var2)
   {
     os_err << var1;
     Log_Error(var2...);
@@ -85,7 +86,7 @@ class Log
    * @tparam     Types  types of individual parameteers in var2
    */
   template <typename T, typename... Types>
-  static void Log_Warning(T var1, Types... var2)
+  HVR_LOG_DLL static void Log_Warning(T var1, Types... var2)
   {
     os_war << var1;
     Log_Warning(var2...);
@@ -101,7 +102,7 @@ class Log
    * @tparam     Types  types of individual parameteers in var2
    */
   template <typename T, typename... Types>
-  static void Log_Info(T var1, Types... var2)
+  HVR_LOG_DLL static void Log_Info(T var1, Types... var2)
   {
     os_inf << var1;
     Log_Info(var2...);
@@ -115,7 +116,7 @@ class Log
    *
    * @return     a new line
    */
-  static std::ostream &hvr_endl(std::ostream &os)
+  HVR_LOG_DLL static std::ostream &hvr_endl(std::ostream &os)
   {
     return std::endl(os);
   }
