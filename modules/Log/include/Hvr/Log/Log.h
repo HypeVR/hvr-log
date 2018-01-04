@@ -70,7 +70,7 @@ class Log
    * @tparam     Types  types of individual parameters in var2
    */
   template <typename T, typename... Types>
-  HVR_LOG_DLL static void Log_Error(T var1, Types... var2)
+  static void Log_Error(T var1, Types... var2)
   {
     os_err << var1;
     Log_Error(var2...);
@@ -86,7 +86,7 @@ class Log
    * @tparam     Types  types of individual parameteers in var2
    */
   template <typename T, typename... Types>
-  HVR_LOG_DLL static void Log_Warning(T var1, Types... var2)
+  static void Log_Warning(T var1, Types... var2)
   {
     os_war << var1;
     Log_Warning(var2...);
@@ -102,7 +102,7 @@ class Log
    * @tparam     Types  types of individual parameteers in var2
    */
   template <typename T, typename... Types>
-  HVR_LOG_DLL static void Log_Info(T var1, Types... var2)
+   static void Log_Info(T var1, Types... var2)
   {
     os_inf << var1;
     Log_Info(var2...);
@@ -116,19 +116,16 @@ class Log
    *
    * @return     a new line
    */
-  HVR_LOG_DLL static std::ostream &hvr_endl(std::ostream &os)
-  {
-    return std::endl(os);
-  }
+HVR_LOG_DLL static std::ostream &hvr_endl(std::ostream &os);
 
  private:
-  static void Log_Error();
-  static void Log_Warning();
-  static void Log_Info();
+     HVR_LOG_DLL static void Log_Error();
+     HVR_LOG_DLL static void Log_Warning();
+     HVR_LOG_DLL static void Log_Info();
 
-  static std::ostringstream os_err;
-  static std::ostringstream os_war;
-  static std::ostringstream os_inf;
+     HVR_LOG_DLL static std::ostringstream os_err;
+     HVR_LOG_DLL static std::ostringstream os_war;
+     HVR_LOG_DLL static std::ostringstream os_inf;
 };
 
 }  // namespace hvr

@@ -88,4 +88,9 @@ void Log::Log_Info()
   if (Log::Get() != nullptr) LOG(INFO) << os_inf.str();
 }
 
+
+std::ostream& Log::hvr_endl(std::ostream &os)
+{
+    return std::endl(os);
+}
 }  // namespace hvr
