@@ -135,8 +135,11 @@ TEST_F(LogTest, Log_Error)
 
             for (std::size_t i = 0; i < key.size(); i++)
             {
-              if (temp[i] == key[i]) is_found = true;
-              break;
+              if (temp[i] == key[i])
+              {
+                is_found = true;
+                break;
+              }
             }
           }
           fin.close();
@@ -190,8 +193,11 @@ TEST_F(LogTest, Log_Info)
 
             for (std::size_t i = 0; i < key.size(); i++)
             {
-              if (temp[i] == key[i]) is_found = true;
-              break;
+              if (temp[i] == key[i])
+              {
+                is_found = true;
+                break;
+              }
             }
           }
           fin.close();
@@ -245,8 +251,11 @@ TEST_F(LogTest, Log_Warning)
 
             for (std::size_t i = 0; i < key.size(); i++)
             {
-              if (temp[i] == key[i]) is_found = true;
-              break;
+              if (temp[i] == key[i])
+              {
+                is_found = true;
+                break;
+              }
             }
           }
           fin.close();
