@@ -5,7 +5,7 @@
 
 void readme()
 {
-  hvr::Log::Log_Error(std::endl, 1, "msjhfg", 34, "\n", "sdkufgti");
+  hvr::Log::Log_Error(1, "msjhfg", 34, hvr::Log::hvr_endl, "sdkufgti");
 }
 
 int main(int argc, char **argv)
