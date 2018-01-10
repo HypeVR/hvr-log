@@ -76,21 +76,23 @@ void Log::Global_Shutdown() const
 void Log::Log_Error()
 {
   if (Log::Get() != nullptr) LOG(ERROR) << os_err.str();
+  os_err.clear();
 }
 
 void Log::Log_Warning()
 {
   if (Log::Get() != nullptr) LOG(WARNING) << os_war.str();
+  os_war.clear();
 }
 
 void Log::Log_Info()
 {
   if (Log::Get() != nullptr) LOG(INFO) << os_inf.str();
+  os_inf.clear();
 }
 
-
-std::ostream& Log::hvr_endl(std::ostream &os)
+std::ostream& Log::hvr_endl(std::ostream& os)
 {
-    return std::endl(os);
+  return std::endl(os);
 }
 }  // namespace hvr
