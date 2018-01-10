@@ -76,19 +76,19 @@ void Log::Global_Shutdown() const
 void Log::Log_Error()
 {
   if (Log::Get() != nullptr) LOG(ERROR) << os_err.str();
-  os_err.clear();
+  os_err.str("");
 }
 
 void Log::Log_Warning()
 {
   if (Log::Get() != nullptr) LOG(WARNING) << os_war.str();
-  os_war.clear();
+  os_war.str("");
 }
 
 void Log::Log_Info()
 {
   if (Log::Get() != nullptr) LOG(INFO) << os_inf.str();
-  os_inf.clear();
+  os_inf.str("");
 }
 
 std::ostream& Log::hvr_endl(std::ostream& os)

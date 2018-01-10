@@ -8,6 +8,9 @@ HVR_WINDOWS_ENABLE_ALL_WARNING
 void readme()
 {
   hvr::Log::Log_Error(1, "msjhfg", 34, hvr::Log::hvr_endl, "sdkufgti");
+  hvr::Log::Log_Error("NewLine");
+  hvr::Log::Log_Error("NewLine1");
+  hvr::Log::Log_Error("NewLine2");
 }
 
 int main(int argc, char **argv)
