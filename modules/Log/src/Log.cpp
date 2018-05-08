@@ -46,14 +46,16 @@ Log::~Log()
 void Log::Global_Initialize(const std::string& app_name,
                             const char* argv0) const
 {
-  std::string info_log_name    = app_name + "_" + "INFO_";
-  std::string warning_log_name = app_name + "_" + "WARNING_";
-  std::string error_log_name   = app_name + "_" + "ERROR_";
-
   ::FLAGS_logbuflevel = -1;
-  google::SetLogDestination(google::GLOG_INFO, info_log_name.c_str());
-  google::SetLogDestination(google::GLOG_WARNING, warning_log_name.c_str());
-  google::SetLogDestination(google::GLOG_ERROR, error_log_name.c_str());
+  if (!app_name.empty())
+  {
+    std::string info_log_name    = app_name + "_" + "INFO_";
+    std::string warning_log_name = app_name + "_" + "WARNING_";
+    std::string error_log_name   = app_name + "_" + "ERROR_";
+    google::SetLogDestination(google::GLOG_INFO, info_log_name.c_str());
+    google::SetLogDestination(google::GLOG_WARNING, warning_log_name.c_str());
+    google::SetLogDestination(google::GLOG_ERROR, error_log_name.c_str());
+  }
   google::SetLogSymlink(google::GLOG_WARNING, "");
   google::SetLogSymlink(google::GLOG_INFO, "");
   google::SetLogSymlink(google::GLOG_ERROR, "");
