@@ -11,11 +11,21 @@ void readme()
   hvr::Log::Log_Error("NewLine");
   hvr::Log::Log_Error("NewLine1");
   hvr::Log::Log_Error("NewLine2");
+
+  hvr::Log::Log_Warning(1, "msjhfg", 34, "sdkufgti");
+  hvr::Log::Log_Warning("NewLine");
+  hvr::Log::Log_Warning("NewLine1");
+  hvr::Log::Log_Warning("NewLine2");
+
+  hvr::Log::Log_Info(1, "msjhfg", 34, hvr::Log::hvr_endl, "sdkufgti");
+  hvr::Log::Log_Info("NewLine");
+  hvr::Log::Log_Info("NewLine1");
+  hvr::Log::Log_Info("NewLine2");
 }
 
 int main(int argc, char **argv)
 {
-  hvr::Log::Create(argv[0], argv[0]);
+  hvr::Log::Create(argv[0], argv[0], false);
 
   if (argc < 4)
   {

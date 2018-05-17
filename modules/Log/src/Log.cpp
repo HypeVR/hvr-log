@@ -14,12 +14,17 @@ namespace hvr
 std::ostringstream Log::os_err = std::ostringstream();
 std::ostringstream Log::os_war = std::ostringstream();
 std::ostringstream Log::os_inf = std::ostringstream();
+std::atomic<bool> Log::thread_safe;
+std::mutex Log::mtx;
 
 std::shared_ptr<Log> Log::ptr_ = nullptr;
 
-void Log::Create(const std::string& app_name, const char* argv0)
+void Log::Create(const std::string& app_name,
+                 const char* argv0,
+                 bool make_thread_safe)
 {
-  if (ptr_ == nullptr) ptr_ = std::make_shared<Log>(app_name, argv0);
+  if (ptr_ == nullptr)
+    ptr_ = std::make_shared<Log>(app_name, argv0, make_thread_safe);
 }
 
 void Log::Reset()
@@ -33,8 +38,9 @@ std::shared_ptr<Log> Log::Get()
   return ptr_;
 }
 
-Log::Log(const std::string& app_name, const char* argv0)
+Log::Log(const std::string& app_name, const char* argv0, bool make_thread_safe)
 {
+  thread_safe = make_thread_safe;
   Global_Initialize(app_name, argv0);
 }
 
@@ -75,19 +81,19 @@ void Log::Global_Shutdown() const
   google::ShutdownGoogleLogging();
 }
 
-void Log::Log_Error()
+void Log::Log_Error_Internal()
 {
   if (Log::Get() != nullptr) LOG(ERROR) << os_err.str();
   os_err.str("");
 }
 
-void Log::Log_Warning()
+void Log::Log_Warning_Internal()
 {
   if (Log::Get() != nullptr) LOG(WARNING) << os_war.str();
   os_war.str("");
 }
 
-void Log::Log_Info()
+void Log::Log_Info_Internal()
 {
   if (Log::Get() != nullptr) LOG(INFO) << os_inf.str();
   os_inf.str("");

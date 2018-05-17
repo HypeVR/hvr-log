@@ -4,8 +4,10 @@
 #define MODULES_LOG_INCLUDE_HVR_LOG_LOG_H_
 
 HVR_WINDOWS_DISABLE_ALL_WARNING
+#include <atomic>
 #include <iostream>
 #include <memory>
+#include <mutex>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -30,7 +32,8 @@ class Log
    * @param[in]  app_name  The application name
    */
   HVR_LOG_DLL static void Create(const std::string &app_name,
-                                 const char *argv0);
+                                 const char *argv0,
+                                 bool make_thread_safe = false);
 
   /**
    * @brief      Destroy log.
@@ -44,7 +47,9 @@ class Log
    */
   HVR_LOG_DLL static std::shared_ptr<Log> Get();
 
-  HVR_LOG_DLL Log(const std::string &app_name, const char *argv0);
+  HVR_LOG_DLL Log(const std::string &app_name,
+                  const char *argv0,
+                  bool make_thread_safe);
   HVR_LOG_DLL ~Log();
 
   /**
@@ -72,8 +77,9 @@ class Log
   template <typename T, typename... Types>
   static void Log_Error(T var1, Types... var2)
   {
-    os_err << var1;
-    Log_Error(var2...);
+    if (thread_safe) mtx.lock();
+    Log_Error_Internal(var1, var2...);
+    if (thread_safe) mtx.unlock();
   }
 
   /**
@@ -88,8 +94,9 @@ class Log
   template <typename T, typename... Types>
   static void Log_Warning(T var1, Types... var2)
   {
-    os_war << var1;
-    Log_Warning(var2...);
+    if (thread_safe) mtx.lock();
+    Log_Warning_Internal(var1, var2...);
+    if (thread_safe) mtx.unlock();
   }
 
   /**
@@ -102,10 +109,11 @@ class Log
    * @tparam     Types  types of individual parameteers in var2
    */
   template <typename T, typename... Types>
-   static void Log_Info(T var1, Types... var2)
+  static void Log_Info(T var1, Types... var2)
   {
-    os_inf << var1;
-    Log_Info(var2...);
+    if (thread_safe) mtx.lock();
+    Log_Info_Internal(var1, var2...);
+    if (thread_safe) mtx.unlock();
   }
 
   /**
@@ -116,16 +124,41 @@ class Log
    *
    * @return     a new line
    */
-HVR_LOG_DLL static std::ostream &hvr_endl(std::ostream &os);
+  HVR_LOG_DLL static std::ostream &hvr_endl(std::ostream &os);
 
  private:
-     HVR_LOG_DLL static void Log_Error();
-     HVR_LOG_DLL static void Log_Warning();
-     HVR_LOG_DLL static void Log_Info();
+  template <typename T, typename... Types>
+  static void Log_Error_Internal(T var1, Types... var2)
+  {
+    os_err << var1;
+    Log_Error_Internal(var2...);
+  }
 
-     HVR_LOG_DLL static std::ostringstream os_err;
-     HVR_LOG_DLL static std::ostringstream os_war;
-     HVR_LOG_DLL static std::ostringstream os_inf;
+  template <typename T, typename... Types>
+  static void Log_Warning_Internal(T var1, Types... var2)
+  {
+    os_war << var1;
+    Log_Warning_Internal(var2...);
+  }
+
+  template <typename T, typename... Types>
+  static void Log_Info_Internal(T var1, Types... var2)
+  {
+    os_inf << var1;
+    Log_Info_Internal(var2...);
+  }
+
+ private:
+  static std::atomic<bool> thread_safe;
+  static std::mutex mtx;
+
+  HVR_LOG_DLL static void Log_Error_Internal();
+  HVR_LOG_DLL static void Log_Warning_Internal();
+  HVR_LOG_DLL static void Log_Info_Internal();
+
+  HVR_LOG_DLL static std::ostringstream os_err;
+  HVR_LOG_DLL static std::ostringstream os_war;
+  HVR_LOG_DLL static std::ostringstream os_inf;
 };
 
 }  // namespace hvr
