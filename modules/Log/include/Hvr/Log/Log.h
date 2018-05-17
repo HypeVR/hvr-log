@@ -3,7 +3,6 @@
 #ifndef MODULES_LOG_INCLUDE_HVR_LOG_LOG_H_
 #define MODULES_LOG_INCLUDE_HVR_LOG_LOG_H_
 
-HVR_WINDOWS_DISABLE_ALL_WARNING
 #include <atomic>
 #include <iostream>
 #include <memory>
@@ -11,6 +10,8 @@ HVR_WINDOWS_DISABLE_ALL_WARNING
 #include <sstream>
 #include <string>
 #include <vector>
+
+HVR_WINDOWS_DISABLE_ALL_WARNING
 #include "glog/logging.h"
 HVR_WINDOWS_ENABLE_ALL_WARNING
 
@@ -149,16 +150,24 @@ class Log
   }
 
  private:
+  HVR_LOG_DLL
   static std::atomic<bool> thread_safe;
+  HVR_LOG_DLL
   static std::mutex mtx;
 
-  HVR_LOG_DLL static void Log_Error_Internal();
-  HVR_LOG_DLL static void Log_Warning_Internal();
-  HVR_LOG_DLL static void Log_Info_Internal();
+  HVR_LOG_DLL
+  static void Log_Error_Internal();
+  HVR_LOG_DLL
+  static void Log_Warning_Internal();
+  HVR_LOG_DLL
+  static void Log_Info_Internal();
 
-  HVR_LOG_DLL static std::ostringstream os_err;
-  HVR_LOG_DLL static std::ostringstream os_war;
-  HVR_LOG_DLL static std::ostringstream os_inf;
+  HVR_LOG_DLL
+  static std::ostringstream os_err;
+  HVR_LOG_DLL
+  static std::ostringstream os_war;
+  HVR_LOG_DLL
+  static std::ostringstream os_inf;
 };
 
 }  // namespace hvr

@@ -5,6 +5,7 @@
 HVR_WINDOWS_DISABLE_ALL_WARNING
 #include <iostream>
 #include <memory>
+#include <mutex>
 #include <string>
 #include <vector>
 HVR_WINDOWS_ENABLE_ALL_WARNING
