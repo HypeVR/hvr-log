@@ -7,7 +7,7 @@ HVR_WINDOWS_ENABLE_ALL_WARNING
 
 void readme()
 {
-  hvr::Log::Log_Error(1, "msjhfg", 34, hvr::Log::hvr_endl, "sdkufgti");
+  hvr::Log::Log_Error(1, "msjhfg", 34, hvr::Log::endl, "sdkufgti");
   hvr::Log::Log_Error("NewLine");
   hvr::Log::Log_Error("NewLine1");
   hvr::Log::Log_Error("NewLine2");
@@ -17,7 +17,7 @@ void readme()
   hvr::Log::Log_Warning("NewLine1");
   hvr::Log::Log_Warning("NewLine2");
 
-  hvr::Log::Log_Info(1, "msjhfg", 34, hvr::Log::hvr_endl, "sdkufgti");
+  hvr::Log::Log_Info(1, "msjhfg", 34, hvr::Log::endl, "sdkufgti");
   hvr::Log::Log_Info("NewLine");
   hvr::Log::Log_Info("NewLine1");
   hvr::Log::Log_Info("NewLine2");

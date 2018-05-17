@@ -99,7 +99,7 @@ void Log::Log_Info_Internal()
   os_inf.str("");
 }
 
-std::ostream& Log::hvr_endl(std::ostream& os)
+std::ostream& Log::endl(std::ostream& os)
 {
   return std::endl(os);
 }

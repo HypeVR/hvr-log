@@ -124,7 +124,7 @@ class Log
    *
    * @return     a new line
    */
-  HVR_LOG_DLL static std::ostream &hvr_endl(std::ostream &os);
+  HVR_LOG_DLL static std::ostream &endl(std::ostream &os);
 
  private:
   template <typename T, typename... Types>
