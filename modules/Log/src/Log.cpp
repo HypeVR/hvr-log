@@ -84,7 +84,8 @@ void Log::Global_Shutdown() const
 
 void Log::Log_Error_Internal()
 {
-  if (Log::Get() != nullptr) LOG(ERROR) << os_err.str();
+  // 31 for red, 33 for yellow
+  if (Log::Get() != nullptr) LOG(ERROR) << "\033[1;33m"+os_err.str()+"\033[0m\n"; 
   os_err.str("");
 }
 
