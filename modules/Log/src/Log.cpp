@@ -59,9 +59,12 @@ void Log::Global_Initialize(const std::string& app_name,
     std::string info_log_name    = app_name + "_" + "INFO_";
     std::string warning_log_name = app_name + "_" + "WARNING_";
     std::string error_log_name   = app_name + "_" + "ERROR_";
-    google::SetLogDestination(google::GLOG_INFO, info_log_name.c_str());
-    google::SetLogDestination(google::GLOG_WARNING, warning_log_name.c_str());
-    google::SetLogDestination(google::GLOG_ERROR, error_log_name.c_str());
+    if (!FLAGS_logtostderr)
+    {
+      google::SetLogDestination(google::GLOG_INFO, info_log_name.c_str());
+      google::SetLogDestination(google::GLOG_WARNING, warning_log_name.c_str());
+      google::SetLogDestination(google::GLOG_ERROR, error_log_name.c_str());
+    }
   }
   google::SetLogSymlink(google::GLOG_WARNING, "");
   google::SetLogSymlink(google::GLOG_INFO, "");
@@ -85,7 +88,8 @@ void Log::Global_Shutdown() const
 void Log::Log_Error_Internal()
 {
   // 31 for red, 33 for yellow
-  if (Log::Get() != nullptr) LOG(ERROR) << "\033[1;33m"+os_err.str()+"\033[0m\n"; 
+  if (Log::Get() != nullptr)
+    LOG(ERROR) << "\033[1;33m" + os_err.str() + "\033[0m\n";
   os_err.str("");
 }
 
