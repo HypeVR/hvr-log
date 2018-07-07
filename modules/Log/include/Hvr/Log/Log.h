@@ -37,6 +37,12 @@ class Log
                                  bool make_thread_safe = false);
 
   /**
+   * @brief      Create a log. Recreate a log will destory the previous log.
+   */
+  HVR_LOG_DLL static void Create(const char *argv0,
+                                 bool make_thread_safe = false);
+
+  /**
    * @brief      Destroy log.
    */
   HVR_LOG_DLL static void Reset();

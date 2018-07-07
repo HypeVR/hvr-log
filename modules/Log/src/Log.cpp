@@ -28,6 +28,15 @@ void Log::Create(const std::string& app_name,
     ptr_ = std::make_shared<Log>(app_name, argv0, make_thread_safe);
 }
 
+void Log::Create(const char* argv0, bool make_thread_safe)
+{
+  std::string local_path =
+      std::string(argv0).substr(std::string(argv0).find_last_of("/\\") + 1);
+  std::string app_name = local_path.substr(0, local_path.find_last_of("."));
+  if (ptr_ == nullptr)
+    ptr_ = std::make_shared<Log>(app_name, argv0, make_thread_safe);
+}
+
 void Log::Reset()
 {
   ptr_.reset();

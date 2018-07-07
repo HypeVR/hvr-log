@@ -25,7 +25,7 @@ void readme()
 
 int main(int argc, char **argv)
 {
-  hvr::Log::Create(argv[0], argv[0], false);
+  hvr::Log::Create(argv[0], false);
 
   if (argc < 4)
   {
