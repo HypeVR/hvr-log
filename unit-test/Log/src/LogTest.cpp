@@ -126,7 +126,7 @@ TEST_F(LogTest, Log_Error)
 
         else
         {
-          std::string key = "Test_error";
+          std::string key = "[1;33mTest_error[0m";
 
           while (!fin.eof())
           {
@@ -184,7 +184,7 @@ TEST_F(LogTest, Log_Info)
 
         else
         {
-          std::string key = "Test_Info";
+          std::string key = "[1;33mTest_Info[0m";
 
           while (!fin.eof())
           {
@@ -193,7 +193,7 @@ TEST_F(LogTest, Log_Info)
 
             for (std::size_t i = 0; i < key.size(); i++)
             {
-              if (temp[i] == key[i])
+              if (temp == key)
               {
                 is_found = true;
                 break;
@@ -242,16 +242,15 @@ TEST_F(LogTest, Log_Warning)
 
         else
         {
-          std::string key = "Test_Warning";
+          std::string key = "[1;33mTest_Warning[0m";
 
           while (!fin.eof())
           {
             std::string temp = "";
             getline(fin, temp);
-
             for (std::size_t i = 0; i < key.size(); i++)
             {
-              if (temp[i] == key[i])
+              if (temp == key)
               {
                 is_found = true;
                 break;
