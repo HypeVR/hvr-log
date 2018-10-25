@@ -52,7 +52,7 @@ Setup PPA - For Linux
 
     sudo sh -c "echo Package: \* >> /etc/apt/preferences"
 
-    sudo sh -c "echo Pin: origin 54.68.121.138 >> /etc/apt/preferences"
+    sudo sh -c "echo Pin: origin ppa.hypevr.com  >> /etc/apt/preferences"
 
     sudo sh -c "echo Pin-Priority: 1001 >> /etc/apt/preferences"
 
