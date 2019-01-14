@@ -25,16 +25,20 @@ void Log::Create(const std::string& app_name,
                  bool make_thread_safe)
 {
   if (ptr_ == nullptr)
+  {
     ptr_ = std::make_shared<Log>(app_name, argv0, make_thread_safe);
+  }
 }
 
 void Log::Create(const char* argv0, bool make_thread_safe)
 {
   std::string local_path =
       std::string(argv0).substr(std::string(argv0).find_last_of("/\\") + 1);
-  std::string app_name = local_path.substr(0, local_path.find_last_of("."));
+  std::string app_name = local_path.substr(0, local_path.find_last_of('.'));
   if (ptr_ == nullptr)
+  {
     ptr_ = std::make_shared<Log>(app_name, argv0, make_thread_safe);
+  }
 }
 
 void Log::Reset()
@@ -98,19 +102,27 @@ void Log::Log_Error_Internal()
 {
   // 31 for red, 33 for yellow
   if (Log::Get() != nullptr)
+  {
     LOG(ERROR) << "\033[1;33m" + os_err.str() + "\033[0m\n";
+  }
   os_err.str("");
 }
 
 void Log::Log_Warning_Internal()
 {
-  if (Log::Get() != nullptr) LOG(WARNING) << os_war.str();
+  if (Log::Get() != nullptr)
+  {
+    LOG(WARNING) << os_war.str();
+  }
   os_war.str("");
 }
 
 void Log::Log_Info_Internal()
 {
-  if (Log::Get() != nullptr) LOG(INFO) << os_inf.str();
+  if (Log::Get() != nullptr)
+  {
+    LOG(INFO) << os_inf.str();
+  }
   os_inf.str("");
 }
 

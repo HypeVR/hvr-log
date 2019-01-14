@@ -35,6 +35,7 @@ int main(int argc, char **argv)
   {
     std::vector<std::thread> threads;
 
+    threads.reserve(10);
     for (int i = 0; i < 10; i++)
     {
       threads.emplace_back(&readme);

@@ -16,13 +16,9 @@ HVR_WINDOWS_ENABLE_ALL_WARNING
 
 extern std::string exe_path;
 
-LogTest::LogTest()
-{
-}
+LogTest::LogTest() = default;
 
-LogTest::~LogTest()
-{
-}
+LogTest::~LogTest() = default;
 
 void LogTest::SetUp()
 {
@@ -51,7 +47,9 @@ void LogTest::TearDown()
       if (found != std::string::npos)
       {
         if (boost::filesystem::exists((*rdi_err).path().string()))
+        {
           std::remove((*rdi_err).path().string().c_str());
+        }
         break;
       }
     }
@@ -68,7 +66,9 @@ void LogTest::TearDown()
       if (found != std::string::npos)
       {
         if (boost::filesystem::exists((*rdi_info).path().string()))
+        {
           std::remove((*rdi_info).path().string().c_str());
+        }
         break;
       }
     }
@@ -85,7 +85,9 @@ void LogTest::TearDown()
       if (found != std::string::npos)
       {
         if (boost::filesystem::exists((*rdi_war).path().string()))
+        {
           std::remove((*rdi_war).path().string().c_str());
+        }
         break;
       }
     }
@@ -130,7 +132,7 @@ TEST_F(LogTest, Log_Error)
 
           while (!fin.eof())
           {
-            std::string temp = "";
+            std::string temp;
             getline(fin, temp);
 
             for (std::size_t i = 0; i < key.size(); i++)
@@ -188,7 +190,7 @@ TEST_F(LogTest, Log_Info)
 
           while (!fin.eof())
           {
-            std::string temp = "";
+            std::string temp;
             getline(fin, temp);
 
             for (std::size_t i = 0; i < key.size(); i++)
@@ -246,7 +248,7 @@ TEST_F(LogTest, Log_Warning)
 
           while (!fin.eof())
           {
-            std::string temp = "";
+            std::string temp;
             getline(fin, temp);
             for (std::size_t i = 0; i < key.size(); i++)
             {
