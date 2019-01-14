@@ -1,3 +1,7 @@
+|Linux|Windows|cpplint|cmakelint|
+|---|---|---|---|
+|[![Build Status](http://jenkins.hypevr.com/buildStatus/icon?job=hvr-log-build-unit-test-linux)](http://jenkins.hypevr.com/job/hvr-log-build-unit-test-linux/)|[![Build Status](http://jenkins.hypevr.com/buildStatus/icon?job=hvr-log-build-unit-test-windows)](http://jenkins.hypevr.com/job/hvr-log-build-unit-test-windows/)|[![Build Status](http://jenkins.hypevr.com/buildStatus/icon?job=hvr-log-cpplint)](http://jenkins.hypevr.com/job/hvr-log-cpplint/)|[![Build Status](http://jenkins.hypevr.com/buildStatus/icon?job=hvr-log-cmakelint)](http://jenkins.hypevr.com/job/hvr-log-cmakelint/)|
+
 How to compile:
 ==============
 
