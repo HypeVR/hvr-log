@@ -110,6 +110,16 @@ else()
   set(CMAKE_CXX_CLANG_TIDY "")
 endif()
 
+set(CPPLINT_EXECUTABLE "cpplint" CACHE STRING "cpplint")
+
+option(RUN_CPPLINT "run cpplint during compilation" ON)
+
+if(RUN_CPPLINT)
+  set(CMAKE_CXX_CPPLINT "${CPPLINT_EXECUTABLE};--quiet")
+else()
+  set(CMAKE_CXX_CPPLINT "")
+endif()
+
 if(NOT TARGET uninstall)
   configure_file(
       ${CMAKE_CURRENT_SOURCE_DIR}/cmake_uninstall.cmake.in
