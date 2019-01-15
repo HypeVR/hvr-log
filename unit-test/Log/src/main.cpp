@@ -3,7 +3,6 @@
 #include <string>
 
 HVR_WINDOWS_DISABLE_ALL_WARNING
-#include "glog/logging.h"
 #include "gtest/gtest.h"
 HVR_WINDOWS_ENABLE_ALL_WARNING
 
@@ -11,14 +10,6 @@ std::string exe_path;  // NOLINT
 
 int main(int argc, char **argv)
 {
-  google::InitGoogleLogging(argv[0]);
-  FLAGS_log_prefix = false;
-
-#ifndef NDEBUG
-  google::SetStderrLogging(google::GLOG_INFO);
-  FLAGS_log_prefix = true;
-#endif
-
   ::testing::InitGoogleTest(&argc, argv);
   exe_path = argv[0];
 
