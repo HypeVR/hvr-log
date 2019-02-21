@@ -3,6 +3,7 @@
 #ifndef MODULES_LOG_INCLUDE_HVR_LOG_LOG_H_
 #define MODULES_LOG_INCLUDE_HVR_LOG_LOG_H_
 
+HVR_WINDOWS_DISABLE_ALL_WARNING
 #include <atomic>
 #include <iostream>
 #include <memory>
@@ -11,7 +12,6 @@
 #include <string>
 #include <vector>
 
-HVR_WINDOWS_DISABLE_ALL_WARNING
 #include "glog/logging.h"
 HVR_WINDOWS_ENABLE_ALL_WARNING
 
