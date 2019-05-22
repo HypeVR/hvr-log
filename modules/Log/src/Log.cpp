@@ -1,4 +1,4 @@
-// Copyright 2017 Caoyang Jiang
+// Copyright 2019 HypeVR
 
 #include "Hvr/Log/Log.h"
 

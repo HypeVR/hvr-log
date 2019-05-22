@@ -1,4 +1,4 @@
-// Copyright 2017 Caoyang Jiang
+// Copyright 2019 HypeVR
 
 #ifndef MODULES_LOG_INCLUDE_HVR_LOG_LOG_H_
 #define MODULES_LOG_INCLUDE_HVR_LOG_LOG_H_

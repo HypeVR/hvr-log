@@ -1,4 +1,4 @@
-// Copyright 2017 Ahmad Hasan
+// Copyright 2019 HypeVR
 
 #ifndef UNIT_TEST_LOG_INCLUDE_LOGTEST_H_
 #define UNIT_TEST_LOG_INCLUDE_LOGTEST_H_

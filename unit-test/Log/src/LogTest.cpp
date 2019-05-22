@@ -1,4 +1,4 @@
-// Copyright 2017 Ahmad Hasan
+// Copyright 2019 HypeVR
 
 #include "LogTest.h"
 
