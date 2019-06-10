@@ -25,52 +25,55 @@ namespace hvr
 class Log
 {
  public:
-  HVR_LOG_DLL static std::shared_ptr<Log> ptr_;
-
   /**
    * @brief      Create a log. Recreate a log will destory the previous log.
    *
    * @param[in]  app_name  The application name
    */
-  HVR_LOG_DLL static void Create(const std::string &app_name,
-                                 const char *argv0,
-                                 bool make_thread_safe = false);
+  HVR_LOG_DLL
+  static void Create(const std::string &app_name,
+                     const char *argv0,
+                     bool make_thread_safe = false);
 
   /**
    * @brief      Create a log. Recreate a log will destory the previous log.
    */
-  HVR_LOG_DLL static void Create(const char *argv0,
-                                 bool make_thread_safe = false);
+  HVR_LOG_DLL
+  static void Create(const char *argv0, bool make_thread_safe = false);
 
   /**
    * @brief      Destroy log.
    */
-  HVR_LOG_DLL static void Reset();
+  HVR_LOG_DLL
+  static void Reset();
 
   /**
    * @brief      Get singleton log
    *
    * @return     log
    */
-  HVR_LOG_DLL static std::shared_ptr<Log> Get();
+  HVR_LOG_DLL
+  static std::shared_ptr<Log> Get();
 
-  HVR_LOG_DLL Log(const std::string &app_name,
-                  const char *argv0,
-                  bool make_thread_safe);
-  HVR_LOG_DLL ~Log();
+  HVR_LOG_DLL
+  Log(const std::string &app_name, const char *argv0, bool make_thread_safe);
+
+  HVR_LOG_DLL
+  ~Log();
 
   /**
    * @brief      Start logging system
    *
    * @param[in]  app_name  The application name
    */
-  HVR_LOG_DLL void Global_Initialize(const std::string &app_name,
-                                     const char *argv0) const;
+  HVR_LOG_DLL
+  void Global_Initialize(const std::string &app_name, const char *argv0) const;
 
   /**
    * @brief      Shutdown logging system
    */
-  HVR_LOG_DLL void Global_Shutdown() const;
+  HVR_LOG_DLL
+  void Global_Shutdown() const;
 
   /**
    * @brief      Logs an error.
@@ -84,9 +87,13 @@ class Log
   template <typename T, typename... Types>
   static void Log_Error(T var1, Types... var2)
   {
-    if (thread_safe) mtx.lock();
+    if (!initialized_)
+    {
+      return;
+    }
+    if (thread_safe_) mtx_.lock();
     Log_Error_Internal(var1, var2...);
-    if (thread_safe) mtx.unlock();
+    if (thread_safe_) mtx_.unlock();
   }
 
   /**
@@ -101,9 +108,13 @@ class Log
   template <typename T, typename... Types>
   static void Log_Warning(T var1, Types... var2)
   {
-    if (thread_safe) mtx.lock();
+    if (!initialized_)
+    {
+      return;
+    }
+    if (thread_safe_) mtx_.lock();
     Log_Warning_Internal(var1, var2...);
-    if (thread_safe) mtx.unlock();
+    if (thread_safe_) mtx_.unlock();
   }
 
   /**
@@ -118,9 +129,13 @@ class Log
   template <typename T, typename... Types>
   static void Log_Info(T var1, Types... var2)
   {
-    if (thread_safe) mtx.lock();
+    if (!initialized_)
+    {
+      return;
+    }
+    if (thread_safe_) mtx_.lock();
     Log_Info_Internal(var1, var2...);
-    if (thread_safe) mtx.unlock();
+    if (thread_safe_) mtx_.unlock();
   }
 
   /**
@@ -131,35 +146,43 @@ class Log
    *
    * @return     a new line
    */
-  HVR_LOG_DLL static std::ostream &endl(std::ostream &os);
+  HVR_LOG_DLL
+  static std::ostream &endl(std::ostream &os);
 
  private:
   template <typename T, typename... Types>
   static void Log_Error_Internal(T var1, Types... var2)
   {
-    os_err << var1;
+    os_err_ << var1;
     Log_Error_Internal(var2...);
   }
 
   template <typename T, typename... Types>
   static void Log_Warning_Internal(T var1, Types... var2)
   {
-    os_war << var1;
+    os_war_ << var1;
     Log_Warning_Internal(var2...);
   }
 
   template <typename T, typename... Types>
   static void Log_Info_Internal(T var1, Types... var2)
   {
-    os_inf << var1;
+    os_inf_ << var1;
     Log_Info_Internal(var2...);
   }
 
  private:
   HVR_LOG_DLL
-  static std::atomic<bool> thread_safe;
+  static std::shared_ptr<Log> ptr_;
+
   HVR_LOG_DLL
-  static std::mutex mtx;
+  static std::atomic_bool thread_safe_;
+
+  HVR_LOG_DLL
+  static std::atomic_bool initialized_;
+
+  HVR_LOG_DLL
+  static std::mutex mtx_;
 
   HVR_LOG_DLL
   static void Log_Error_Internal();
@@ -169,11 +192,11 @@ class Log
   static void Log_Info_Internal();
 
   HVR_LOG_DLL
-  static std::ostringstream os_err;
+  static std::ostringstream os_err_;
   HVR_LOG_DLL
-  static std::ostringstream os_war;
+  static std::ostringstream os_war_;
   HVR_LOG_DLL
-  static std::ostringstream os_inf;
+  static std::ostringstream os_inf_;
 };
 
 }  // namespace hvr

@@ -12,11 +12,12 @@ HVR_WINDOWS_ENABLE_ALL_WARNING
 
 namespace hvr
 {
-std::ostringstream Log::os_err = std::ostringstream();
-std::ostringstream Log::os_war = std::ostringstream();
-std::ostringstream Log::os_inf = std::ostringstream();
-std::atomic<bool> Log::thread_safe;
-std::mutex Log::mtx;
+std::ostringstream Log::os_err_    = std::ostringstream();
+std::ostringstream Log::os_war_    = std::ostringstream();
+std::ostringstream Log::os_inf_    = std::ostringstream();
+std::atomic_bool Log::thread_safe_ = false;
+std::atomic_bool Log::initialized_ = false;
+std::mutex Log::mtx_;
 
 std::shared_ptr<Log> Log::ptr_ = nullptr;
 
@@ -54,7 +55,7 @@ std::shared_ptr<Log> Log::Get()
 
 Log::Log(const std::string& app_name, const char* argv0, bool make_thread_safe)
 {
-  thread_safe = make_thread_safe;
+  thread_safe_ = make_thread_safe;
   Global_Initialize(app_name, argv0);
 }
 
@@ -91,6 +92,7 @@ void Log::Global_Initialize(const std::string& app_name,
   google::SetStderrLogging(google::GLOG_INFO);
   ::FLAGS_log_prefix = true;
 #endif
+  initialized_ = true;
 }
 
 void Log::Global_Shutdown() const
@@ -103,27 +105,27 @@ void Log::Log_Error_Internal()
   // 31 for red, 33 for yellow
   if (Log::Get() != nullptr)
   {
-    LOG(ERROR) << "\033[1;33m" + os_err.str() + "\033[0m\n";
+    LOG(ERROR) << "\033[1;33m" + os_err_.str() + "\033[0m\n";
   }
-  os_err.str("");
+  os_err_.str("");
 }
 
 void Log::Log_Warning_Internal()
 {
   if (Log::Get() != nullptr)
   {
-    LOG(WARNING) << os_war.str();
+    LOG(WARNING) << os_war_.str();
   }
-  os_war.str("");
+  os_war_.str("");
 }
 
 void Log::Log_Info_Internal()
 {
   if (Log::Get() != nullptr)
   {
-    LOG(INFO) << os_inf.str();
+    LOG(INFO) << os_inf_.str();
   }
-  os_inf.str("");
+  os_inf_.str("");
 }
 
 std::ostream& Log::endl(std::ostream& os)
