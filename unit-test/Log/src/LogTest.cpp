@@ -30,7 +30,6 @@ void LogTest::TearDown()
   std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 
   std::string directory;
-  std::string extension      = ".log";
   std::string prefix_error   = "Log_ERROR";
   std::string prefix_info    = "Log_INFO";
   std::string prefix_warning = "Log_WARNING";
@@ -40,18 +39,15 @@ void LogTest::TearDown()
 
   for (; rdi_err != end_rdi_err; rdi_err++)
   {
-    if (extension.compare((*rdi_err).path().extension().string()) == 0)
-    {
-      std::size_t found = (*rdi_err).path().string().find(prefix_error);
+    std::size_t found = (*rdi_err).path().string().find(prefix_error);
 
-      if (found != std::string::npos)
+    if (found != std::string::npos)
+    {
+      if (boost::filesystem::exists((*rdi_err).path().string()))
       {
-        if (boost::filesystem::exists((*rdi_err).path().string()))
-        {
-          std::remove((*rdi_err).path().string().c_str());
-        }
-        break;
+        std::remove((*rdi_err).path().string().c_str());
       }
+      break;
     }
   }
 
@@ -60,17 +56,14 @@ void LogTest::TearDown()
 
   for (; rdi_info != end_rdi_info; rdi_info++)
   {
-    if (extension.compare((*rdi_info).path().extension().string()) == 0)
+    std::size_t found = (*rdi_info).path().string().find(prefix_info);
+    if (found != std::string::npos)
     {
-      std::size_t found = (*rdi_info).path().string().find(prefix_info);
-      if (found != std::string::npos)
+      if (boost::filesystem::exists((*rdi_info).path().string()))
       {
-        if (boost::filesystem::exists((*rdi_info).path().string()))
-        {
-          std::remove((*rdi_info).path().string().c_str());
-        }
-        break;
+        std::remove((*rdi_info).path().string().c_str());
       }
+      break;
     }
   }
 
@@ -79,17 +72,14 @@ void LogTest::TearDown()
 
   for (; rdi_war != end_rdi_war; rdi_war++)
   {
-    if (extension.compare((*rdi_war).path().extension().string()) == 0)
+    std::size_t found = (*rdi_war).path().string().find(prefix_warning);
+    if (found != std::string::npos)
     {
-      std::size_t found = (*rdi_war).path().string().find(prefix_warning);
-      if (found != std::string::npos)
+      if (boost::filesystem::exists((*rdi_war).path().string()))
       {
-        if (boost::filesystem::exists((*rdi_war).path().string()))
-        {
-          std::remove((*rdi_war).path().string().c_str());
-        }
-        break;
+        std::remove((*rdi_war).path().string().c_str());
       }
+      break;
     }
   }
 }
@@ -103,49 +93,45 @@ TEST_F(LogTest, Log_Error)
 
   boost::filesystem::path p;
   std::string directory;
-  std::string extension = ".log";
-  std::string prefix    = "Log_ERROR";
-  directory             = exe_path;
+  std::string prefix = "Log_ERROR";
+  directory          = exe_path;
 
   boost::filesystem::recursive_directory_iterator rdi(directory);
   boost::filesystem::recursive_directory_iterator end_rdi;
 
   for (; rdi != end_rdi; rdi++)
   {
-    if (extension.compare((*rdi).path().extension().string()) == 0)
+    std::size_t found = (*rdi).path().string().find(prefix);
+
+    if (found != std::string::npos)
     {
-      std::size_t found = (*rdi).path().string().find(prefix);
+      std::ifstream fin;
+      fin.open((*rdi).path().string());
 
-      if (found != std::string::npos)
+      if (fin.fail())
       {
-        std::ifstream fin;
-        fin.open((*rdi).path().string());
+        std::cout << "Input file opening failed.\n";
+      }
 
-        if (fin.fail())
+      else
+      {
+        std::string key = "[1;33mTest_error[0m";
+
+        while (!fin.eof())
         {
-          std::cout << "Input file opening failed.\n";
-        }
+          std::string temp;
+          getline(fin, temp);
 
-        else
-        {
-          std::string key = "[1;33mTest_error[0m";
-
-          while (!fin.eof())
+          for (std::size_t i = 0; i < key.size(); i++)
           {
-            std::string temp;
-            getline(fin, temp);
-
-            for (std::size_t i = 0; i < key.size(); i++)
+            if (temp[i] == key[i])
             {
-              if (temp[i] == key[i])
-              {
-                is_found = true;
-                break;
-              }
+              is_found = true;
+              break;
             }
           }
-          fin.close();
         }
+        fin.close();
       }
     }
   }
@@ -161,49 +147,45 @@ TEST_F(LogTest, Log_Info)
 
   boost::filesystem::path p;
   std::string directory;
-  std::string extension = ".log";
-  std::string prefix    = "Log_INFO";
-  directory             = exe_path;
+  std::string prefix = "Log_INFO";
+  directory          = exe_path;
 
   boost::filesystem::recursive_directory_iterator rdi(directory);
   boost::filesystem::recursive_directory_iterator end_rdi;
 
   for (; rdi != end_rdi; rdi++)
   {
-    if (extension.compare((*rdi).path().extension().string()) == 0)
+    std::size_t found = (*rdi).path().string().find(prefix);
+
+    if (found != std::string::npos)
     {
-      std::size_t found = (*rdi).path().string().find(prefix);
+      std::ifstream fin;
+      fin.open((*rdi).path().string());
 
-      if (found != std::string::npos)
+      if (fin.fail())
       {
-        std::ifstream fin;
-        fin.open((*rdi).path().string());
+        std::cout << "Input file opening failed.\n";
+      }
 
-        if (fin.fail())
+      else
+      {
+        std::string key = "[1;33mTest_Info[0m";
+
+        while (!fin.eof())
         {
-          std::cout << "Input file opening failed.\n";
-        }
+          std::string temp;
+          getline(fin, temp);
 
-        else
-        {
-          std::string key = "[1;33mTest_Info[0m";
-
-          while (!fin.eof())
+          for (std::size_t i = 0; i < key.size(); i++)
           {
-            std::string temp;
-            getline(fin, temp);
-
-            for (std::size_t i = 0; i < key.size(); i++)
+            if (temp == key)
             {
-              if (temp == key)
-              {
-                is_found = true;
-                break;
-              }
+              is_found = true;
+              break;
             }
           }
-          fin.close();
         }
+        fin.close();
       }
     }
   }
@@ -219,48 +201,44 @@ TEST_F(LogTest, Log_Warning)
 
   boost::filesystem::path p;
   std::string directory;
-  std::string extension = ".log";
-  std::string prefix    = "Log_WARNING";
-  directory             = exe_path;
+  std::string prefix = "Log_WARNING";
+  directory          = exe_path;
 
   boost::filesystem::recursive_directory_iterator rdi(directory);
   boost::filesystem::recursive_directory_iterator end_rdi;
 
   for (; rdi != end_rdi; rdi++)
   {
-    if (extension.compare((*rdi).path().extension().string()) == 0)
+    std::size_t found = (*rdi).path().string().find(prefix);
+
+    if (found != std::string::npos)
     {
-      std::size_t found = (*rdi).path().string().find(prefix);
+      std::ifstream fin;
+      fin.open((*rdi).path().string());
 
-      if (found != std::string::npos)
+      if (fin.fail())
       {
-        std::ifstream fin;
-        fin.open((*rdi).path().string());
+        std::cout << "Input file opening failed.\n";
+      }
 
-        if (fin.fail())
+      else
+      {
+        std::string key = "[1;33mTest_Warning[0m";
+
+        while (!fin.eof())
         {
-          std::cout << "Input file opening failed.\n";
-        }
-
-        else
-        {
-          std::string key = "[1;33mTest_Warning[0m";
-
-          while (!fin.eof())
+          std::string temp;
+          getline(fin, temp);
+          for (std::size_t i = 0; i < key.size(); i++)
           {
-            std::string temp;
-            getline(fin, temp);
-            for (std::size_t i = 0; i < key.size(); i++)
+            if (temp == key)
             {
-              if (temp == key)
-              {
-                is_found = true;
-                break;
-              }
+              is_found = true;
+              break;
             }
           }
-          fin.close();
         }
+        fin.close();
       }
     }
   }
