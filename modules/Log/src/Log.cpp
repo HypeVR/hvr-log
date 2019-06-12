@@ -12,11 +12,11 @@ HVR_WINDOWS_ENABLE_ALL_WARNING
 
 namespace hvr
 {
-std::ostringstream Log::os_err_    = std::ostringstream();
-std::ostringstream Log::os_war_    = std::ostringstream();
-std::ostringstream Log::os_inf_    = std::ostringstream();
-std::atomic_bool Log::thread_safe_ = false;
-std::atomic_bool Log::initialized_ = false;
+std::ostringstream Log::os_err_ = std::ostringstream();
+std::ostringstream Log::os_war_ = std::ostringstream();
+std::ostringstream Log::os_inf_ = std::ostringstream();
+std::atomic_bool Log::thread_safe_;
+std::atomic_bool Log::initialized_;
 std::mutex Log::mtx_;
 
 std::shared_ptr<Log> Log::ptr_ = nullptr;
@@ -25,6 +25,9 @@ void Log::Create(const std::string& app_name,
                  const char* argv0,
                  bool make_thread_safe)
 {
+  thread_safe_ = false;
+  initialized_ = false;
+
   if (ptr_ == nullptr)
   {
     ptr_ = std::make_shared<Log>(app_name, argv0, make_thread_safe);
@@ -36,6 +39,10 @@ void Log::Create(const char* argv0, bool make_thread_safe)
   std::string local_path =
       std::string(argv0).substr(std::string(argv0).find_last_of("/\\") + 1);
   std::string app_name = local_path.substr(0, local_path.find_last_of('.'));
+
+  thread_safe_ = false;
+  initialized_ = false;
+
   if (ptr_ == nullptr)
   {
     ptr_ = std::make_shared<Log>(app_name, argv0, make_thread_safe);
