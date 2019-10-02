@@ -2,9 +2,7 @@ cmake_minimum_required(VERSION 3.11)
 
 project(GlogSample)
 
-set(PROJECT_SRCS
-${PROJECT_SOURCE_DIR}/src/GlogSample.cpp
-)
+set(PROJECT_SRCS ${PROJECT_SOURCE_DIR}/src/GlogSample.cpp)
 
 source_group("src" FILES ${PROJECT_SRCS})
 
@@ -14,6 +12,7 @@ target_link_libraries(${PROJECT_NAME} hvr_log)
 
 set_property(TARGET ${PROJECT_NAME} PROPERTY FOLDER ${CMAKE_PROJECT_NAME}/apps)
 
-install(TARGETS ${PROJECT_NAME}
-        EXPORT ${CMAKE_PROJECT_NAME}Targets
-        DESTINATION bin COMPONENT install-app)
+install(TARGETS ${PROJECT_NAME} EXPORT ${CMAKE_PROJECT_NAME}Targets DESTINATION
+                                                                    bin
+                                                                    COMPONENT
+                                                                    install-app)
