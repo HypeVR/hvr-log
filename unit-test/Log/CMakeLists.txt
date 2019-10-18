@@ -13,8 +13,7 @@ find_package(Boost COMPONENTS filesystem REQUIRED)
 add_executable(LogTest ${LOG_SRCS} ${LOG_INCS})
 
 target_include_directories(
-  ${PROJECT_NAME}
-  PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>)
+  ${PROJECT_NAME} PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>)
 
 target_link_libraries(LogTest hvr_log Boost::filesystem GTest::gtest_main)
 
