@@ -143,42 +143,18 @@ void Log::Log_Info_Internal()
 Log& Log::LogInfo()
 {
   severity_ = Severity::INFO;
-  // if (!info_begin_)
-  //{
-  //  Log_Info_Internal("\n");
-  //}
-  // else
-  //{
-  //  info_begin_ = false;
-  //}
   return *Get();
 }
 
 Log& Log::LogWarning()
 {
   severity_ = Severity::WARNING;
-  // if (!warning_begin_)
-  //{
-  //  Log_Info_Internal("\n");
-  //}
-  // else
-  //{
-  //  warning_begin_ = false;
-  //}
   return *Get();
 }
 
 Log& Log::LogError()
 {
   severity_ = Severity::ERROR;
-  // if (!error_begin_)
-  //{
-  //  Log_Info_Internal("\n");
-  //}
-  // else
-  //{
-  //  error_begin_ = false;
-  //}
   return *Get();
 }
 
