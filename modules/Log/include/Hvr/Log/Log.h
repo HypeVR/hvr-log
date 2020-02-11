@@ -17,6 +17,14 @@ HVR_WINDOWS_ENABLE_ALL_WARNING
 
 namespace hvr
 {
+enum class Severity
+{
+  NA,
+  INFO,
+  WARNING,
+  ERROR
+};
+
 /**
  * @brief      Class for log.
  * @ingroup    Log
@@ -139,15 +147,61 @@ class Log
   }
 
   /**
+   * @brief      Logs an information.
+   *
+   * @return     reference to log singleton
+   */
+  HVR_LOG_DLL
+  static Log &LogInfo();
+
+  /**
+   * @brief      Logs a warning.
+   *
+   * @return     reference to log singleton
+   */
+  HVR_LOG_DLL
+  static Log &LogWarning();
+
+  /**
+   * @brief      Logs an error.
+   *
+   * @return     reference to log singleton
+   */
+  HVR_LOG_DLL
+  static Log &LogError();
+
+  /**
+   * @brief      Overloaded output operator.
+   *
+   * @param[in]  msg   The message
+   *
+   * @tparam     T     Data type
+   *
+   * @return     reference to log singleton
+   */
+  template <typename T>
+  Log &operator<<(const T &msg)
+  {
+    switch (severity_)
+    {
+      case Severity::INFO: os_inf_ << msg; break;
+      case Severity::WARNING: os_war_ << msg; break;
+      case Severity::ERROR: os_err_ << msg; break;
+      default: Log_Info_Internal(msg); break;
+    }
+    return *Get();
+  }
+
+  /**
    * @brief      Puts a newline whenever this function pointer is used for
-   * logging
+   *             logging, if in output operator mode, print the last line and
+   *             creates newline.
    *
    * @param      os    std::ostringstream
    *
    * @return     a new line
    */
-  HVR_LOG_DLL
-  static std::ostream &endl(std::ostream &os);
+  HVR_LOG_DLL static std::ostream &endl(std::ostream &os);
 
  private:
   template <typename T, typename... Types>
@@ -185,11 +239,28 @@ class Log
   static std::mutex mtx_;
 
   HVR_LOG_DLL
+  static Severity severity_;
+
+  HVR_LOG_DLL
+  static bool info_begin_;
+  HVR_LOG_DLL
+  static bool warning_begin_;
+  HVR_LOG_DLL
+  static bool error_begin_;
+
+  HVR_LOG_DLL
   static void Log_Error_Internal();
   HVR_LOG_DLL
   static void Log_Warning_Internal();
   HVR_LOG_DLL
   static void Log_Info_Internal();
+
+  HVR_LOG_DLL
+  static void Log_Error_Internal_SL();
+  HVR_LOG_DLL
+  static void Log_Warning_Internal_SL();
+  HVR_LOG_DLL
+  static void Log_Info_Internal_SL();
 
   HVR_LOG_DLL
   static std::ostringstream os_err_;

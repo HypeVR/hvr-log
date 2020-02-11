@@ -18,6 +18,10 @@ std::ostringstream Log::os_inf_ = std::ostringstream();
 std::atomic_bool Log::thread_safe_;
 std::atomic_bool Log::initialized_;
 std::mutex Log::mtx_;
+Severity Log::severity_  = Severity::NA;
+bool Log::info_begin_    = true;
+bool Log::warning_begin_ = true;
+bool Log::error_begin_   = true;
 
 std::shared_ptr<Log> Log::ptr_ = nullptr;
 
@@ -99,6 +103,7 @@ void Log::Global_Initialize(const std::string& app_name,
   google::SetStderrLogging(google::GLOG_INFO);
   ::FLAGS_log_prefix = true;
 #endif
+
   initialized_ = true;
 }
 
@@ -135,8 +140,65 @@ void Log::Log_Info_Internal()
   os_inf_.str("");
 }
 
+Log& Log::LogInfo()
+{
+  severity_ = Severity::INFO;
+  // if (!info_begin_)
+  //{
+  //  Log_Info_Internal("\n");
+  //}
+  // else
+  //{
+  //  info_begin_ = false;
+  //}
+  return *Get();
+}
+
+Log& Log::LogWarning()
+{
+  severity_ = Severity::WARNING;
+  // if (!warning_begin_)
+  //{
+  //  Log_Info_Internal("\n");
+  //}
+  // else
+  //{
+  //  warning_begin_ = false;
+  //}
+  return *Get();
+}
+
+Log& Log::LogError()
+{
+  severity_ = Severity::ERROR;
+  // if (!error_begin_)
+  //{
+  //  Log_Info_Internal("\n");
+  //}
+  // else
+  //{
+  //  error_begin_ = false;
+  //}
+  return *Get();
+}
+
 std::ostream& Log::endl(std::ostream& os)
 {
-  return std::endl(os);
+  switch (severity_)
+  {
+    case hvr::Severity::INFO:
+      os_inf_ << std ::endl;
+      Log_Info_Internal();
+      return os;
+    case hvr::Severity::WARNING:
+      os_war_ << std ::endl;
+      Log_Warning_Internal();
+      return os;
+    case hvr::Severity::ERROR:
+      os_err_ << std ::endl;
+      Log_Error_Internal();
+      return os;
+    default: return std::endl(os);
+  }
 }
 }  // namespace hvr

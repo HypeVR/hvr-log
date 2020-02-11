@@ -244,3 +244,20 @@ TEST_F(LogTest, Log_Warning)
   }
   ASSERT_EQ(is_found, true);
 }
+
+TEST_F(LogTest, LogInfo)
+{
+  hvr::Log::Create(exe_path + "/Log", "LogInfoTest");
+  hvr::Log::Log_Error("Test_Info");
+
+  hvr::Log::LogInfo() << "YO" << 123 << 1.35 << hvr::Log::endl;
+  hvr::Log::LogInfo() << "NextLine!" << hvr::Log::endl;
+
+  hvr::Log::LogWarning() << "YO" << 123 << 1.35 << hvr::Log::endl;
+  hvr::Log::LogWarning() << "NextLine!" << hvr::Log::endl;
+
+  hvr::Log::LogError() << "YO" << 123 << 1.35 << hvr::Log::endl;
+  hvr::Log::LogError() << "NextLine!" << hvr::Log::endl;
+
+  ASSERT_EQ(true, true);
+}
